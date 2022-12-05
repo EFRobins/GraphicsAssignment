@@ -64,18 +64,22 @@ public class M01_GLEventListener implements GLEventListener {
    */
    
   private Camera camera;
-  private Model floor, cube, sphere, 
-  leftWall, rightWall;
+  private Model floor,leftWall, rightWall, sphere, 
+   nearRightLeg, nearLeftLeg, farRightLeg, farLeftLeg, tableTop;
   private Light light;
   //private SGNode twoBranchRoot;
 
   private void disposeModels(GL3 gl) {
     floor.dispose(gl);
-    cube.dispose(gl);
+    nearRightLeg.dispose(gl);
     sphere.dispose(gl);
     light.dispose(gl);
     rightWall.dispose(gl);
     leftWall.dispose(gl);
+    farRightLeg.dispose(gl);
+    farLeftLeg.dispose(gl);
+    tableTop.dispose(gl);
+
     //twoBranchRoot.dispose(gl);
   }
   
@@ -99,23 +103,47 @@ public class M01_GLEventListener implements GLEventListener {
   
     m = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(1.0f, 1.0f, 1.0f), 32.0f);
+    material = new Material(new Vec3(0.7f, 0.4f, 0.4f), new Vec3(0.7f, 0.5f, 0.3f), new Vec3(0.7f, 0.5f, 0.3f), 16.0f);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(-90f), Mat4Transform.scale(16,1,16));
     modelMatrix = Mat4.multiply(Mat4Transform.translate(-8.0f,8.0f,0.0f),modelMatrix);
-    leftWall = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId0);
+    leftWall = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId5);
 
     m = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(1.0f, 1.0f, 1.0f), 32.0f);
+    material = new Material(new Vec3(0.7f, 0.4f, 0.4f), new Vec3(0.7f, 0.5f, 0.3f), new Vec3(0.7f, 0.5f, 0.3f), 16.0f);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(90f), Mat4Transform.scale(16,1,16));
     modelMatrix = Mat4.multiply(Mat4Transform.translate(8.0f,8.0f,0.0f),modelMatrix);
-    rightWall = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId0);
+    rightWall = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId5);
 
     m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
     shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
     material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
-    modelMatrix = Mat4.multiply(Mat4Transform.scale(0.5f,4f,0.5f), Mat4Transform.translate(4f,0.5f,4f));
-    cube = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(0.5f,3.7f,0.5f), Mat4Transform.translate(4f,0.5f,4f));
+    nearRightLeg = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
+
+    m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
+    shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
+    material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(0.5f,3.7f,0.5f), Mat4Transform.translate(-4f,0.5f,4f));
+    nearLeftLeg = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
+
+    m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
+    shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
+    material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(0.5f,3.7f,0.5f), Mat4Transform.translate(4f,0.5f,-4f));
+    farRightLeg = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
+
+    m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
+    shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
+    material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(0.5f,3.7f,0.5f), Mat4Transform.translate(-4f,0.5f,-4f));
+    farLeftLeg = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
+
+    m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
+    shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
+    material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(4.5f,0.3f,4.5f), Mat4Transform.translate(0.0f,12.3f,-0.0f));
+    tableTop = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
 
     m = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
     shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04.txt");
@@ -124,7 +152,7 @@ public class M01_GLEventListener implements GLEventListener {
     //shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04_notex.txt");
     
     material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
-    modelMatrix = Mat4.multiply(Mat4Transform.scale(3,3,3), Mat4Transform.translate(0,0.5f,0));
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(3,4,3), Mat4Transform.translate(0,0.5f,0));
     modelMatrix = Mat4.multiply(Mat4Transform.translate(0,4,0), modelMatrix);
     
     sphere = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId3, textureId4);
@@ -140,10 +168,14 @@ public class M01_GLEventListener implements GLEventListener {
     light.render(gl);
 
     floor.render(gl);
-    cube.render(gl);
     sphere.render(gl);
     rightWall.render(gl);
     leftWall.render(gl);
+    nearRightLeg.render(gl);
+    nearLeftLeg.render(gl);
+    farRightLeg.render(gl);
+    farLeftLeg.render(gl);
+    tableTop.render(gl);
   }
 
   // The light's postion is continually being changed, so needs to be calculated for each frame.
