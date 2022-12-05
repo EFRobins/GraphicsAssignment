@@ -88,8 +88,8 @@ public class Camera {
       case NO_MOVEMENT: break;
       case LEFT: position.add(Vec3.multiply(right, -KEYBOARD_SPEED)); break;
       case RIGHT: position.add(Vec3.multiply(right, KEYBOARD_SPEED)); break;
-      case UP: position.add(Vec3.multiply(up, KEYBOARD_SPEED)); break;
-      case DOWN: position.add(Vec3.multiply(up, -KEYBOARD_SPEED)); break;
+      case UP: position.add(Vec3.multiply(front, KEYBOARD_SPEED)); break;
+      case DOWN: position.add(Vec3.multiply(front, -KEYBOARD_SPEED)); break;
       case FORWARD: position.add(Vec3.multiply(front, KEYBOARD_SPEED)); break;
       case BACK: position.add(Vec3.multiply(front, -KEYBOARD_SPEED)); break;
     }

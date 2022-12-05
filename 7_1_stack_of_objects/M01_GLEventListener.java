@@ -64,14 +64,19 @@ public class M01_GLEventListener implements GLEventListener {
    */
    
   private Camera camera;
-  private Model tt1, cube, sphere;
+  private Model floor, cube, sphere, 
+  leftWall, rightWall;
   private Light light;
+  //private SGNode twoBranchRoot;
 
   private void disposeModels(GL3 gl) {
-    tt1.dispose(gl);
+    floor.dispose(gl);
     cube.dispose(gl);
     sphere.dispose(gl);
     light.dispose(gl);
+    rightWall.dispose(gl);
+    leftWall.dispose(gl);
+    //twoBranchRoot.dispose(gl);
   }
   
   public void initialise(GL3 gl) {
@@ -81,27 +86,42 @@ public class M01_GLEventListener implements GLEventListener {
     int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
     int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
     int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
-    
+    int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/brick_wall.jpg");
+
     light = new Light(gl);
     light.setCamera(camera);
     
     Mesh m = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    Material material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
+    Material material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(1.0f, 1.0f, 1.0f), 32.0f);
     Mat4 modelMatrix = Mat4Transform.scale(16,1f,16);
-    tt1 = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId0);
-    
+    floor = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId0);
+  
+    m = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+    material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(1.0f, 1.0f, 1.0f), 32.0f);
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(-90f), Mat4Transform.scale(16,1,16));
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(-8.0f,8.0f,0.0f),modelMatrix);
+    leftWall = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId0);
+
+    m = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+    material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(1.0f, 1.0f, 1.0f), 32.0f);
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(90f), Mat4Transform.scale(16,1,16));
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(8.0f,8.0f,0.0f),modelMatrix);
+    rightWall = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId0);
+
     m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
     shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
     material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
-    modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(0.5f,4f,0.5f), Mat4Transform.translate(4f,0.5f,4f));
     cube = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
 
     m = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
     shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04.txt");
     
-    // no texture version
-    // shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04_notex.txt");
+    // no texture version 
+    //shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04_notex.txt");
     
     material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
     modelMatrix = Mat4.multiply(Mat4Transform.scale(3,3,3), Mat4Transform.translate(0,0.5f,0));
@@ -119,9 +139,11 @@ public class M01_GLEventListener implements GLEventListener {
     light.setPosition(getLightPosition());  // changing light position each frame
     light.render(gl);
 
-    tt1.render(gl);
+    floor.render(gl);
     cube.render(gl);
     sphere.render(gl);
+    rightWall.render(gl);
+    leftWall.render(gl);
   }
 
   // The light's postion is continually being changed, so needs to be calculated for each frame.
